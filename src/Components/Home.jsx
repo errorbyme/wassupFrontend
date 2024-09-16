@@ -12,7 +12,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user) window.location.href = "/";
+    if (!user) navigate("/");
   }, [user]);
 
   const [msg, Setmsg] = useState("");
