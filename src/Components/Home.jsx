@@ -12,8 +12,8 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user) navigate("/");
-  }, [user, navigate]);
+    if (!user) window.location.href = "/";
+  }, [user]);
 
   const [msg, Setmsg] = useState("");
   const [id, Setid] = useState("");
@@ -23,7 +23,9 @@ const Home = () => {
   useEffect(() => {
     if (!user) navigate("/");
 
-    socket = io("https://wassupbackend.onrender.com/", { transports: ["websocket"] });
+    socket = io("https://wassupbackend.onrender.com/", {
+      transports: ["websocket"],
+    });
 
     socket.on("connect", () => {
       console.log("connected dude");
@@ -52,7 +54,12 @@ const Home = () => {
     socket.on("fileUploaded", ({ fileUrl, user, id }) => {
       Setmsgs((msgs) => [
         ...msgs,
-        { img: `https://wassupbackend.onrender.com${fileUrl}`, u: user, i: id, m: "" },
+        {
+          img: `https://wassupbackend.onrender.com${fileUrl}`,
+          u: user,
+          i: id,
+          m: "",
+        },
       ]);
     });
 
@@ -97,10 +104,13 @@ const Home = () => {
     formData.append("id", id);
 
     try {
-      const response = await fetch("https://wassupbackend.onrender.com/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://wassupbackend.onrender.com/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const result = await response.json();
 
