@@ -18,6 +18,7 @@ const Home = () => {
   const [msg, Setmsg] = useState("");
   const [id, Setid] = useState("");
   const [msgs, Setmsgs] = useState([]);
+  const [isTrue, SetisTrue] = useState(false);
   const endOfMessagesRef = useRef(null);
 
   useEffect(() => {
@@ -26,6 +27,7 @@ const Home = () => {
     socket = io("https://wassupbackend.onrender.com/", {
       transports: ["websocket"],
     });
+    if (socket != undefined) SetisTrue(true);
 
     socket.on("connect", () => {
       console.log("connected dude");
@@ -121,37 +123,43 @@ const Home = () => {
   };
 
   return (
-    <div className="chat_page">
-      <div className="chat_header">
-        <h3>@{user}</h3>
-        <a href="/">X</a>
-      </div>
-      <div className="chat_box">
-        {msgs.map((m, i) => (
-          <Message msg={m} id={id} key={i} />
-        ))}
-        <div ref={endOfMessagesRef} className="lastmsg"></div>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <div className="chat_send">
-          <label htmlFor="imgId">+</label>
-          <input
-            id="imgId"
-            type="file"
-            onChange={handleFileUpload}
-            className="img"
-          />
-          <input
-            type="text"
-            value={msg}
-            onChange={(e) => Setmsg(e.target.value)}
-            autoFocus
-            placeholder="Type Here..."
-          />
-          <button type="submit">Send</button>
+    <>
+      {!isTrue ? (
+        <h1>...is Loading</h1>
+      ) : (
+        <div className="chat_page">
+          <div className="chat_header">
+            <h3>@{user}</h3>
+            <a href="/">X</a>
+          </div>
+          <div className="chat_box">
+            {msgs.map((m, i) => (
+              <Message msg={m} id={id} key={i} />
+            ))}
+            <div ref={endOfMessagesRef} className="lastmsg"></div>
+          </div>
+          <form onSubmit={handleSubmit}>
+            <div className="chat_send">
+              <label htmlFor="imgId">+</label>
+              <input
+                id="imgId"
+                type="file"
+                onChange={handleFileUpload}
+                className="img"
+              />
+              <input
+                type="text"
+                value={msg}
+                onChange={(e) => Setmsg(e.target.value)}
+                autoFocus
+                placeholder="Type Here..."
+              />
+              <button type="submit">Send</button>
+            </div>
+          </form>
         </div>
-      </form>
-    </div>
+      )}
+    </>
   );
 };
 
