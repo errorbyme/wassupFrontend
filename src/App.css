@@ -61,8 +61,6 @@ body {
   flex-direction: column;
   max-width: 500px;
   width: 100%;
-  position: relative;
-  padding-bottom: 4.2rem;
 }
 .chat_page .chat_header {
   padding: 0.5rem 2rem;
@@ -114,11 +112,8 @@ body {
 }
 
 .chat_page .chat_send {
-  position: absolute;
   padding: 0.9rem 0.6rem;
   display: flex;
-  width: 100%;
-  bottom: 0;
   background-color: rgba(0, 0, 0, 0.6);
 }
 .chat_page .chat_send label {
