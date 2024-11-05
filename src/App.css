@@ -9,6 +9,9 @@
   display: none;
   scroll-behavior: smooth;
 }
+.loading {
+  color: white;
+}
 body {
   background-color: rgb(34, 34, 34);
 }
@@ -62,8 +65,12 @@ body {
   flex-direction: column;
   max-width: 500px;
   width: 100%;
+  position: relative;
 }
 .chat_page .chat_header {
+  position: sticky;
+  width: 100%;
+  top: 0;
   padding: 0.5rem 2rem;
   display: flex;
   justify-content: space-between;
@@ -116,6 +123,8 @@ body {
   padding: 0.9rem 0.6rem;
   display: flex;
   background-color: rgba(0, 0, 0, 0.6);
+  position: sticky;
+  bottom: 0;
 }
 .chat_page .chat_send label {
   padding: 0;

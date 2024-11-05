@@ -22,12 +22,14 @@ const Home = () => {
   const endOfMessagesRef = useRef(null);
 
   useEffect(() => {
-    if (!user) navigate("/");
+    if (socket?.connected) SetisTrue(true);
+  }, [socket]);
 
+  useEffect(() => {
+    if (!user) navigate("/");
     socket = io("https://wassupbackend.onrender.com/", {
       transports: ["websocket"],
     });
-    if (socket != undefined) SetisTrue(true);
 
     socket.on("connect", () => {
       console.log("connected dude");
@@ -125,7 +127,7 @@ const Home = () => {
   return (
     <>
       {!isTrue ? (
-        <h1>...is Loading</h1>
+        <h1 className="loading">...is Loading</h1>
       ) : (
         <div className="chat_page">
           <div className="chat_header">
