@@ -74,15 +74,15 @@ const Home = () => {
     };
   }, [navigate, user]);
 
+  const scrollToBottom = () => {
+    if (endOfMessagesRef.current) {
+      endOfMessagesRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }
+  };
   useEffect(() => {
-    const scrollToBottom = () => {
-      if (endOfMessagesRef.current) {
-        endOfMessagesRef.current.scrollIntoView({
-          behavior: "smooth",
-          block: "end",
-        });
-      }
-    };
     requestAnimationFrame(scrollToBottom);
   }, [msgs]);
 
@@ -124,6 +124,10 @@ const Home = () => {
       console.error("Error uploading file:", error);
     }
   };
+  const handleMessage = (e) => {
+    Setmsg(e.target.value);
+    requestAnimationFrame(scrollToBottom);
+  };
 
   return (
     <>
@@ -153,7 +157,7 @@ const Home = () => {
               <input
                 type="text"
                 value={msg}
-                onChange={(e) => Setmsg(e.target.value)}
+                onChange={handleMessage}
                 autoFocus
                 placeholder="Type Here..."
               />
