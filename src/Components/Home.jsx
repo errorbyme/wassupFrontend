@@ -27,6 +27,7 @@ const Home = () => {
 
   useEffect(() => {
     if (!user) navigate("/");
+
     socket = io("https://wassupbackend.onrender.com/", {
       transports: ["websocket"],
     });
