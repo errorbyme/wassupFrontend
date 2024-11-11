@@ -124,10 +124,27 @@ const Home = () => {
       console.error("Error uploading file:", error);
     }
   };
-  const handleMessage = (e) => {
-    Setmsg(e.target.value);
-    requestAnimationFrame(scrollToBottom);
-  };
+
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+
+  useEffect(() => {
+    // Detect when the keyboard is open by monitoring window resize
+    const handleResize = () => {
+      const isKeyboardOpen = window.innerHeight < 500; // You can adjust this threshold based on your UI
+      setKeyboardOpen(isKeyboardOpen);
+      if (isKeyboardOpen) {
+        setTimeout(scrollToBottom, 300); // Wait a bit for layout to stabilize
+      }
+    };
+
+    // Listen to resize events (for keyboard opening/closing)
+    window.addEventListener("resize", handleResize);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <>
@@ -157,8 +174,10 @@ const Home = () => {
               <input
                 type="text"
                 value={msg}
-                onChange={handleMessage}
+                onChange={(e) => Setmsg(e.target.value)}
                 autoFocus
+                onFocus={() => setKeyboardOpen(true)}
+                onBlur={() => setKeyboardOpen(false)}
                 placeholder="Type Here..."
               />
               <button type="submit">Send</button>
