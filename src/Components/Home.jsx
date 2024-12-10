@@ -18,11 +18,11 @@ const Home = () => {
   const [msg, Setmsg] = useState("");
   const [id, Setid] = useState("");
   const [msgs, Setmsgs] = useState([]);
-  const [isTrue, SetisTrue] = useState(false);
+  const [isTrue, SetisTrue] = useState(true);
   const endOfMessagesRef = useRef(null);
 
   useEffect(() => {
-    if (socket?.connected) SetisTrue(true);
+    if (socket?.connected) SetisTrue(false);
   }, [socket]);
 
   useEffect(() => {
@@ -146,46 +146,42 @@ const Home = () => {
     };
   }, []);
 
+  if (isTrue) return <h1 className="loading">...is Loading</h1>;
+
   return (
-    <>
-      {!isTrue ? (
-        <h1 className="loading">...is Loading</h1>
-      ) : (
-        <div className="chat_page">
-          <div className="chat_header">
-            <h3>@{user}</h3>
-            <a href="/">X</a>
-          </div>
-          <div className="chat_box">
-            {msgs.map((m, i) => (
-              <Message msg={m} id={id} key={i} />
-            ))}
-            <div ref={endOfMessagesRef} className="lastmsg"></div>
-          </div>
-          <form onSubmit={handleSubmit}>
-            <div className="chat_send">
-              <label htmlFor="imgId">+</label>
-              <input
-                id="imgId"
-                type="file"
-                onChange={handleFileUpload}
-                className="img"
-              />
-              <input
-                type="text"
-                value={msg}
-                onChange={(e) => Setmsg(e.target.value)}
-                autoFocus
-                onFocus={() => setKeyboardOpen(true)}
-                onBlur={() => setKeyboardOpen(false)}
-                placeholder="Type Here..."
-              />
-              <button type="submit">Send</button>
-            </div>
-          </form>
+    <div className="chat_page">
+      <div className="chat_header">
+        <h3>@{user}</h3>
+        <a href="/">X</a>
+      </div>
+      <div className="chat_box">
+        {msgs.map((m, i) => (
+          <Message msg={m} id={id} key={i} />
+        ))}
+        <div ref={endOfMessagesRef} className="lastmsg"></div>
+      </div>
+      <form onSubmit={handleSubmit}>
+        <div className="chat_send">
+          <label htmlFor="imgId">+</label>
+          <input
+            id="imgId"
+            type="file"
+            onChange={handleFileUpload}
+            className="img"
+          />
+          <input
+            type="text"
+            value={msg}
+            onChange={(e) => Setmsg(e.target.value)}
+            autoFocus
+            onFocus={() => setKeyboardOpen(true)}
+            onBlur={() => setKeyboardOpen(false)}
+            placeholder="Type Here..."
+          />
+          <button type="submit">Send</button>
         </div>
-      )}
-    </>
+      </form>
+    </div>
   );
 };
 
