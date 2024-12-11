@@ -19,22 +19,33 @@ const Home = () => {
   const [id, Setid] = useState("");
   const [msgs, Setmsgs] = useState([]);
   const [isTrue, SetisTrue] = useState(true);
+  const [isConnected, setIsConnected] = useState(true);
   const endOfMessagesRef = useRef(null);
 
   useEffect(() => {
-    if (socket?.connected) SetisTrue(false);
-  }, [socket]);
+    const connectToSocket = async () => {
+      socket = io("https://wassupbackend.onrender.com", {
+        transports: ["websocket"],
+        reconnection: false,
+      });
+
+      socket.on("connect", () => {
+        console.log("connected to server");
+        setIsConnected(true);
+        SetisTrue(false);
+      });
+
+      socket.on("disconnect", () => {
+        setIsConnected(false);
+      });
+    };
+    connectToSocket();
+  }, []);
+
+  // Use the isConnected state variable to display the connection status
 
   useEffect(() => {
     if (!user) navigate("/");
-
-    socket = io("https://wassupbackend.onrender.com/", {
-      transports: ["websocket"],
-    });
-
-    socket.on("connect", () => {
-      console.log("connected dude");
-    });
 
     socket.emit("Joined", { user });
 
@@ -146,7 +157,16 @@ const Home = () => {
     };
   }, []);
 
-  if (isTrue) return <h1 className="loading">...is Loading</h1>;
+  if (isTrue)
+    return (
+      <div>
+        {isConnected ? (
+          <h1 className="loading">...is Loading</h1>
+        ) : (
+          <h1 className="loading">...cudnt connected</h1>
+        )}
+      </div>
+    );
 
   return (
     <div className="chat_page">
