@@ -26,7 +26,6 @@ const Home = () => {
     const connectToSocket = async () => {
       socket = io("https://wassupbackend.onrender.com", {
         transports: ["websocket"],
-        reconnection: false,
       });
 
       socket.on("connect", () => {
